@@ -18,13 +18,16 @@ package main
 
 import (
 	_ "contract-template/sdk" // ensure sdk is imported
-
-	"contract-template/sdk"
 )
 
 //go:wasmexport entrypoint
 func Entrypoint(a *string) *string {
-	sdk.Log(a)
 	// panic("test")
 	return a
+}
+
+//go:wasmexport hello_world
+func HelloWorld(a *string) *string {
+	ret := "Hello world"
+	return &ret
 }
