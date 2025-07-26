@@ -5,4 +5,4 @@ import (
 )
 
 //go:wasmimport sdk console.log
-func Log(s *string)
+func Log(s *string) *string
