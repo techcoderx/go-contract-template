@@ -17,7 +17,7 @@
 package main
 
 import (
-	_ "contract-template/sdk" // ensure sdk is imported
+	_ "contract-template/runtime" // ensure sdk is imported
 )
 
 //go:wasmexport entrypoint
