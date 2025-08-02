@@ -22,9 +22,13 @@ import (
 	"contract-template/sdk"
 )
 
+func main() {
+
+}
+
 //go:wasmexport entrypoint
 func Entrypoint(a *string) *string {
-	sdk.Log(a)
+	sdk.Log(*a)
 	// panic("test")
 	return a
 }
