@@ -6,46 +6,46 @@ import (
 )
 
 //go:wasmimport sdk console.log
-func _Log(s *string) *string
+func log(s *string) *string
 
 func Log(s string) {
-	_Log(&s)
+	log(&s)
 }
 
 //go:wasmimport sdk db.set_object
-func STATE_SETOBJECT(key *string, value *string) *string
+func StateSetObject(key *string, value *string) *string
 
 //go:wasmimport sdk db.get_object
-func STATE_GETOBJECT(key *string) *string
+func StateGetObject(key *string) *string
 
 //go:wasmimport sdk db.rm_object
-func STATE_DELETEOBJECT(key *string) *string
+func StateDeleteObject(key *string) *string
 
 //go:wasmimport sdk system.get_env
-func _GET_ENV(arg *string) *string
+func getEnv(arg *string) *string
 
 //go:wasmimport sdk system.get_env_key
-func GET_ENV_KEY(arg *string) *string
+func GetEnvKey(arg *string) *string
 
 //go:wasmimport sdk hive.get_balance
-func GET_BALANCE(arg *string) *int64
+func GetBalance(arg *string) *int64
 
 //go:wasmimport sdk hive.draw
-func HIVE_DRAW(arg1 *string, arg2 *string) *string
+func HiveDraw(arg1 *string, arg2 *string) *string
 
 //go:wasmimport sdk hive.transfer
-func HIVE_TRANSFER(arg1 *string, arg2 *string, arg3 *string) *string
+func HiveTransfer(arg1 *string, arg2 *string, arg3 *string) *string
 
 //go:wasmimport sdk hive.withdraw
-func HIVE_WITHDRAW(arg1 *string, arg2 *string, arg3 *string) *string
+func HiveWithdraw(arg1 *string, arg2 *string, arg3 *string) *string
 
 // /TODO: this is not implemented yet
 // /go:wasmimport sdk contracts.read
-func _CONTRACTS_READ(contractId *string, key *string) *string
+func contractRead(contractId *string, key *string) *string
 
 // /TODO: this is not implemented yet
 // /go:wasmimport sdk contracts.call
-func _CONTRACT_CALL(contractId *string, method *string, payload *string, options *string) *string
+func contractCall(contractId *string, method *string, payload *string, options *string) *string
 
 // var envMap = []string{
 // 	"contract.id",
@@ -58,8 +58,8 @@ func _CONTRACT_CALL(contractId *string, method *string, payload *string, options
 // 	"block.timestamp",
 // }
 
-func GET_ENV() Env {
-	envStr := *_GET_ENV(nil)
+func GetEnv() Env {
+	envStr := *getEnv(nil)
 	env := Env{}
 	// envMap := map[string]interface{}{}
 	json.Unmarshal([]byte(envStr), &env)
