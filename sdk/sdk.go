@@ -3,6 +3,7 @@ package sdk
 import (
 	_ "contract-template/runtime"
 	"encoding/json"
+	"strconv"
 )
 
 //go:wasmimport sdk console.log
@@ -28,16 +29,16 @@ func getEnv(arg *string) *string
 func GetEnvKey(arg *string) *string
 
 //go:wasmimport sdk hive.get_balance
-func GetBalance(arg *string) *int64
+func getBalance(arg1 *string, arg2 *string) *int64
 
 //go:wasmimport sdk hive.draw
-func HiveDraw(arg1 *string, arg2 *string) *string
+func hiveDraw(arg1 *string, arg2 *string) *string
 
 //go:wasmimport sdk hive.transfer
-func HiveTransfer(arg1 *string, arg2 *string, arg3 *string) *string
+func hiveTransfer(arg1 *string, arg2 *string, arg3 *string) *string
 
 //go:wasmimport sdk hive.withdraw
-func HiveWithdraw(arg1 *string, arg2 *string, arg3 *string) *string
+func hiveWithdraw(arg1 *string, arg2 *string, arg3 *string) *string
 
 // /TODO: this is not implemented yet
 // /go:wasmimport sdk contracts.read
@@ -58,6 +59,7 @@ func contractCall(contractId *string, method *string, payload *string, options *
 // 	"block.timestamp",
 // }
 
+// Get current execution environment variables
 func GetEnv() Env {
 	envStr := *getEnv(nil)
 	env := Env{}
@@ -126,4 +128,34 @@ func GetEnv() Env {
 	// 	}
 	// }
 	return env
+}
+
+// Get balance of an account
+func GetBalance(address Address, asset Asset) int64 {
+	addr := address.String()
+	as := asset.String()
+	return *getBalance(&addr, &as)
+}
+
+// Transfer assets from caller account to the contract up to the limit specified in `intents`. The transaction must be signed using active authority for Hive accounts.
+func HiveDraw(amount int64, asset Asset) {
+	amt := strconv.FormatInt(amount, 10)
+	as := asset.String()
+	hiveDraw(&amt, &as)
+}
+
+// Transfer assets from the contract to another account.
+func HiveTransfer(to Address, amount int64, asset Asset) {
+	toaddr := to.String()
+	amt := strconv.FormatInt(amount, 10)
+	as := asset.String()
+	hiveTransfer(&toaddr, &amt, &as)
+}
+
+// Unmap assets from the contract to a specified Hive account.
+func HiveWithdraw(to Address, amount int64, asset Asset) {
+	toaddr := to.String()
+	amt := strconv.FormatInt(amount, 10)
+	as := asset.String()
+	hiveWithdraw(&toaddr, &amt, &as)
 }
