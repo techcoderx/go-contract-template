@@ -14,19 +14,19 @@ func Log(s string) {
 }
 
 //go:wasmimport sdk db.set_object
-func StateSetObject(key *string, value *string) *string
+func stateSetObject(key *string, value *string) *string
 
 //go:wasmimport sdk db.get_object
-func StateGetObject(key *string) *string
+func stateGetObject(key *string) *string
 
 //go:wasmimport sdk db.rm_object
-func StateDeleteObject(key *string) *string
+func stateDeleteObject(key *string) *string
 
 //go:wasmimport sdk system.get_env
 func getEnv(arg *string) *string
 
 //go:wasmimport sdk system.get_env_key
-func GetEnvKey(arg *string) *string
+func getEnvKey(arg *string) *string
 
 //go:wasmimport sdk hive.get_balance
 func getBalance(arg1 *string, arg2 *string) *int64
@@ -58,6 +58,21 @@ func contractCall(contractId *string, method *string, payload *string, options *
 // 	"block.height",
 // 	"block.timestamp",
 // }
+
+// Set a value by key in the contract state
+func StateSetObject(key string, value string) {
+	stateSetObject(&key, &value)
+}
+
+// Get a value by key from the contract state
+func StateGetObject(key string) *string {
+	return stateGetObject(&key)
+}
+
+// Delete or unset a value by key in the contract state
+func StateDeleteObject(key string) {
+	stateDeleteObject(&key)
+}
 
 // Get current execution environment variables
 func GetEnv() Env {
@@ -128,6 +143,11 @@ func GetEnv() Env {
 	// 	}
 	// }
 	return env
+}
+
+// Get current execution environment variable by a key
+func GetEnvKey(key string) *string {
+	return getEnvKey(&key)
 }
 
 // Get balance of an account
