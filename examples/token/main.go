@@ -86,8 +86,7 @@ func getBalance(account sdk.Address) uint64 {
 //
 //go:wasmexport init
 func Init(a *string) *string {
-	isInit := sdk.StateGetObject("isInit")
-	if isInit == nil {
+	if isInit() {
 		// env.Abort()
 	}
 	env := sdk.GetEnv()
