@@ -1,3 +1,6 @@
 {
-  "go.buildTags": "gc.custom"
+  "go.buildTags": "gc.custom",
+  "go.testEnvVars": {
+    "CGO_LDFLAGS": "-Wl,-rpath,/Users/techcoderx/.wasmedge/lib"
+  },
 }

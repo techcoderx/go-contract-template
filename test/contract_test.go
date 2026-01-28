@@ -32,7 +32,7 @@ func TestEntrypoint(t *testing.T) {
 		RequiredPostingAuths: []string{},
 	}
 
-	callResult, _, _ := ct.Call(stateEngine.TxVscCallContract{
+	result := ct.Call(stateEngine.TxVscCallContract{
 		Self:       txSelf,
 		ContractId: "vscmycontract",
 		Action:     "entrypoint",
@@ -46,6 +46,6 @@ func TestEntrypoint(t *testing.T) {
 			},
 		}},
 	})
-	assert.True(t, callResult.Success)
-	assert.Equal(t, callResult.Ret, "abc")
+	assert.True(t, result.Success)
+	assert.Equal(t, result.Ret, "abc")
 }
