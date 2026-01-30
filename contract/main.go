@@ -43,6 +43,32 @@ func ClearString(a *string) *string {
 	return nil
 }
 
+//go:wasmexport getEphemStr
+func EphemGetStr(a *string) *string {
+	params := strings.Split((*a), ",")
+	if len(params) < 2 {
+		return sdk.EphemStateGetObject("", params[0])
+	} else {
+		return sdk.EphemStateGetObject(params[0], params[1])
+	}
+}
+
+//go:wasmexport setEphemStr
+func EphemSetStr(a *string) *string {
+	params := strings.Split((*a), ",")
+	if len(params) < 2 {
+		sdk.Abort("invalid payload")
+	}
+	sdk.EphemStateSetObject(params[0], params[1])
+	return a
+}
+
+//go:wasmexport clearEphemStr
+func EphemClearStr(a *string) *string {
+	sdk.EphemStateDeleteObject(*a)
+	return nil
+}
+
 //go:wasmexport dumpEnv
 func DumpEnv(a *string) *string {
 	env := sdk.GetEnvStr()
