@@ -227,8 +227,29 @@ func CreateKey(a *string) *string {
 	if len(params) < 2 {
 		sdk.Revert("invalid payload", "invalid_payload")
 	}
-	status := sdk.TssCreateKey(params[0], params[1])
+	epochs := uint64(20)
+	if len(params) >= 3 {
+		epochs, _ = strconv.ParseUint(params[2], 10, 64)
+	}
+	status := sdk.TssCreateKeyForEpochs(params[0], params[1], epochs)
 	return &status
+}
+
+//go:wasmexport renewKey
+func RenewKey(a *string) *string {
+	params := strings.Split((*a), ",")
+	if len(params) < 2 {
+		sdk.Revert("invalid payload", "invalid_payload")
+	}
+	epochs, err := strconv.ParseUint(params[1], 10, 64)
+	if err != nil {
+		sdk.Abort(err.Error())
+	}
+	if epochs < 1 || epochs > 365 {
+		epochs = 20
+	}
+	result := sdk.TssRenewKey(params[0], epochs)
+	return &result
 }
 
 //go:wasmexport getKey
